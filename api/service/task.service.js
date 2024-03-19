@@ -26,7 +26,16 @@ module.exports = {
                 }
                 return calback(null, results);
 
-            })
+            });
+    },
 
+    deleteTask: (id, calback) => {
+        pool.query("DELETE FROM task WHERE id=?", [id],
+            (error, results, fields) => {
+                if (error) {
+                    return calback(error);
+                };
+                return calback(null, results);
+            });
     }
 };
