@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const taskRouter = require("./api/router/task.router.js");
 
 const app = express();
 
 
-
-
+app.use(express.json());
+app.use("/api/task", taskRouter);
 
 
 
