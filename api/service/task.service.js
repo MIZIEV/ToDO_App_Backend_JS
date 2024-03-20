@@ -13,6 +13,16 @@ module.exports = {
             });
     },
 
+    getOneTask: (id, calback) => {
+        pool.query("SELECT * FROM task WHERE id=?", [id],
+            (error, result, fields) => {
+                if (error) {
+                    return calback(error);
+                }
+                return calback(null, result[0]);
+            });
+    },
+
     addNewTask: (data, calback) => {
         pool.query(`INSERT INTO task (created_at, description, is_completed, name) VALUES (?, ?, ?, ?)`,
             [
@@ -26,6 +36,22 @@ module.exports = {
                 }
                 return calback(null, results);
 
+            });
+    },
+
+    updateTask: (id, data, calback) => {
+        pool.query(`UPDATE task SET created_at=?, description=?, is_completed=?, name=? WHERE id=?`,
+            [
+                data.created_at,
+                data.description,
+                data.is_completed,
+                data.name,
+                id
+            ], (error, results, fields) => {
+                if (error) {
+                    return calback(error);
+                }
+                return calback(null, results);
             });
     },
 
