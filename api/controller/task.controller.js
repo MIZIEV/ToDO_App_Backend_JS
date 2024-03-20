@@ -1,4 +1,4 @@
-const { addNewTask, getAllTasks, deleteTask } = require("../service/task.service.js");
+const { addNewTask, getOneTask, getAllTasks, updateTask, deleteTask } = require("../service/task.service.js");
 
 
 module.exports = {
@@ -32,6 +32,49 @@ module.exports = {
                 data: results
             });
         });
+    },
+
+    getOneTask: (req, res) => {
+        const id = req.params.id;
+
+        getOneTask(id, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (!results) {
+                return res.status(404).json({
+                    success: 0,
+                    message: "Task not found!"
+                })
+            }
+            return res.status(200).json({
+                success: 1,
+                result: results
+            })
+        });
+    },
+    
+    updateTask: (req, res) => {
+        const id = req.params.id;
+        const data = req.body;
+
+        updateTask(id, data, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (!results) {
+                return res.status(404).json({
+                    success: 0,
+                    message: "Task not found!"
+                });
+            };
+            return res.status(200).json({
+                success: 1,
+                message: "Task updated."
+            })
+        })
     },
 
     deleteTask: (req, res) => {
