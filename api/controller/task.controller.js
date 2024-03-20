@@ -54,7 +54,7 @@ module.exports = {
             })
         });
     },
-    
+
     updateTask: (req, res) => {
         const id = req.params.id;
         const data = req.body;
@@ -64,7 +64,7 @@ module.exports = {
                 console.log(err);
                 return;
             }
-            if (!results) {
+            if (results.affectedRows === 0) {
                 return res.status(404).json({
                     success: 0,
                     message: "Task not found!"
