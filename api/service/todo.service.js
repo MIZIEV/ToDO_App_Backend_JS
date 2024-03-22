@@ -25,5 +25,15 @@ module.exports = {
                 }
                 return callback(null, results);
             });
+    },
+
+    deleteTodo: (todoId, callback) => {
+        pool.query("DELETE FROM todo WHERE id = ?", [todoId],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            });
     }
 };

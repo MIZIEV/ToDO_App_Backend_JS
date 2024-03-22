@@ -1,4 +1,4 @@
-const { addNewTodo, getAllTodos } = require("../service/todo.service.js");
+const { addNewTodo, getAllTodos, deleteTodo } = require("../service/todo.service.js");
 
 
 module.exports = {
@@ -38,5 +38,30 @@ module.exports = {
                 data: results
             })
         })
+    },
+
+    deleteTodo: (req, res) => {
+        const todoId = req.params.todoId;
+
+        deleteTodo(todoId, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    success: 0,
+                    message: "Server error!"
+                });
+            };
+            if (results.affectedRows === 0) {
+                return res.status(404).json({
+                    success: 0,
+                    message: "Todo not found!"
+                });
+            };
+            return res.status(200).json({
+                success: 1,
+                message: "Todo deleted."
+            })
+        })
     }
+
 }
