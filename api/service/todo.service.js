@@ -15,5 +15,15 @@ module.exports = {
                 }
                 return callback(null, results)
             });
+    },
+
+    getAllTodos: (todoId, callback) => {
+        pool.query("SELECT * FROM todo WHERE todo_id = ?", [todoId],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            });
     }
 };
