@@ -35,5 +35,15 @@ module.exports = {
                 }
                 return callback(null, results);
             });
+    },
+
+    toggleTodoCompletion: (todoId, callback) => {
+        pool.query("UPDATE todo SET is_completed = NOT is_completed WHERE id = ?", [todoId],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            });
     }
 };
