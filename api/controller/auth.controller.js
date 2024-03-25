@@ -1,4 +1,5 @@
-const { register } = require("../service/auth.service.js");
+const { sign } = require("jsonwebtoken");
+const { register, login } = require("../service/auth.service.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt")
 
 module.exports = {
@@ -21,6 +22,40 @@ module.exports = {
                 message: results
             })
         });
+    },
 
+    login: (req, res) => {
+        const body = req.body;
+
+        login(body.email, (err, results) => {
+            if (err) {
+                console.log(err);
+            };
+            if (!results) {
+                res.json({
+                    success: 0,
+                    message: "Invalid email or password!"
+                })
+            };
+
+            const result = compareSync(body.password, results.password);
+
+            if (result) {
+                results.password = undefined;
+                const jsonToken = sign({ result: results }, "key", {
+                    expiresIn: "1h"
+                });
+                return res.json({
+                    success: 1,
+                    message: "Login is successfully!",
+                    token: jsonToken
+                });
+            } else {
+                return res.json({
+                    success: 0,
+                    message: "Invalid email or password"
+                });
+            };
+        });
     }
 }
