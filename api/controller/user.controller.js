@@ -1,4 +1,4 @@
-const { updateUser } = require("../service/user.cervice.js");
+const { updateUser, deleteUser } = require("../service/user.service.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt")
 
 module.exports = {
@@ -25,5 +25,20 @@ module.exports = {
                 message: "User updated!"
             });
         });
+    },
+
+    deleteUser: (req, res) => {
+        const username = req.params.username;
+
+        deleteUser(username, (err, reult) => {
+            if (err) {
+                console.log(err);
+                return;
+            };
+            return res.status(200).json({
+                success: 1,
+                message: "User deleted!"
+            });
+        })
     }
 }

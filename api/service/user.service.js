@@ -15,5 +15,14 @@ module.exports = {
                 };
                 return callBack(null, results);
             })
+    },
+    deleteUser: (username, callBack) => {
+        pool.query("DELETE FROM user WHERE user_name=?", [username],
+            (error, results, fields) => {
+                if (error) {
+                    return callBack(error);
+                };
+                return callBack(null, results);
+            });
     }
-}
+};
