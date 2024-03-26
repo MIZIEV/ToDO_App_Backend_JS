@@ -5,10 +5,12 @@ const pool = require("../../configuration/databaseConnector.js");
 module.exports = {
 
     getAllTasks: (username, callback) => {
+        
+        let id;
+
         pool.query("SELECT id FROM user WHERE user_name = ?", [username],
             (error, userResults, fields) => {
 
-                let id;
 
                 if (error) {
                     return callback(error);
