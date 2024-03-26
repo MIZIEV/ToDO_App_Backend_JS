@@ -5,8 +5,9 @@ module.exports = {
     addNewTask: (req, res) => {
 
         const body = req.body;
+        const username = req.params.username;
 
-        addNewTask(body, (err, results) => {
+        addNewTask(username, body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -22,12 +23,15 @@ module.exports = {
     },
 
     getAllTasks: (req, res) => {
-        getAllTasks((err, results) => {
+
+        const username = req.params.username;
+
+        getAllTasks(username, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             };
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });
