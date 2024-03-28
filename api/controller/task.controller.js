@@ -68,10 +68,7 @@ module.exports = {
                     message: "Task not found!"
                 });
             };
-            return res.status(200).json({
-                success: 1,
-                message: "Task updated."
-            })
+            return res.status(200).json(results);
         })
     },
 
