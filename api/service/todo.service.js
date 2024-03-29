@@ -23,7 +23,15 @@ module.exports = {
                 if (error) {
                     return callback(error);
                 }
-                return callback(null, results);
+
+                const modifyResults = results.map(todo => ({
+                    id: todo.id,
+                    is_completed: todo.is_completed,
+                    todoName: todo.todo_name,
+                    todo_id: todo.todo_id
+                }))
+
+                return callback(null, modifyResults);
             });
     },
 
