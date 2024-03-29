@@ -15,10 +15,7 @@ module.exports = {
                     message: "Database connection error."
                 });
             }
-            return res.status(201).json({
-                success: 1,
-                data: results
-            });
+            return res.status(201).json(results);
         });
     },
 
