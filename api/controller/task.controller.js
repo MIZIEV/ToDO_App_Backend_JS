@@ -31,10 +31,7 @@ module.exports = {
                 console.log(err);
                 return;
             };
-            return res.status(200).json({
-                success: 1,
-                data: results
-            });
+            return res.status(200).json(results);
         });
     },
 
@@ -52,10 +49,7 @@ module.exports = {
                     message: "Task not found!"
                 })
             }
-            return res.status(200).json({
-                success: 1,
-                result: results
-            })
+            return res.status(200).json(results)
         });
     },
 
@@ -74,10 +68,7 @@ module.exports = {
                     message: "Task not found!"
                 });
             };
-            return res.status(200).json({
-                success: 1,
-                message: "Task updated."
-            })
+            return res.status(200).json(results);
         })
     },
 
