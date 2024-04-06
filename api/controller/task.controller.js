@@ -1,12 +1,13 @@
-const { addNewTask, getOneTask, getAllTasks, updateTask, deleteTask } = require("../service/task.service.js");
+const { addNewTask, getOneTask, getAllTasks, getCompletedTasks, updateTask, completeTask, deleteTask } = require("../service/task.service.js");
 
 
 module.exports = {
     addNewTask: (req, res) => {
 
         const body = req.body;
+        const username = req.params.username;
 
-        addNewTask(body, (err, results) => {
+        addNewTask(username, body, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json({
@@ -22,15 +23,15 @@ module.exports = {
     },
 
     getAllTasks: (req, res) => {
-        getAllTasks((err, results) => {
+
+        const username = req.params.username;
+
+        getAllTasks(username, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             };
-            return res.json({
-                success: 1,
-                data: results
-            });
+            return res.status(200).json(results);
         });
     },
 
@@ -48,10 +49,19 @@ module.exports = {
                     message: "Task not found!"
                 })
             }
-            return res.status(200).json({
-                success: 1,
-                result: results
-            })
+            return res.status(200).json(results)
+        });
+    },
+
+    getCompletedTask: (req, res) => {
+        const username = req.params.username;
+
+        getCompletedTasks(username, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            return res.status(200).json(results);
         });
     },
 
@@ -70,10 +80,26 @@ module.exports = {
                     message: "Task not found!"
                 });
             };
-            return res.status(200).json({
-                success: 1,
-                message: "Task updated."
-            })
+            return res.status(200).json(results);
+        })
+    },
+
+    completeTask: (req, res) => {
+
+        const id = req.params.id;
+
+        completeTask(id, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (results.affectedRows === 0) {
+                return res.status(404).json({
+                    success: 0,
+                    message: "Task not found!"
+                });
+            };
+            return res.status(200).json(results);
         })
     },
 

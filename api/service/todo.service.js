@@ -4,8 +4,9 @@ module.exports = {
 
 
     addNewTodo: (todoId, data, callback) => {
+
         pool.query("INSERT INTO todo (is_completed, todo_name, todo_id) VALUES (?, ?, ?)", [
-            data.isCompleted,
+            isCompleted,
             data.todoName,
             todoId
         ],
@@ -23,7 +24,15 @@ module.exports = {
                 if (error) {
                     return callback(error);
                 }
-                return callback(null, results);
+
+                const modifyResults = results.map(todo => ({
+                    id: todo.id,
+                    isCompleted: todo.is_completed[0] === 1,
+                    todoName: todo.todo_name,
+                    todo_id: todo.todo_id
+                }))
+
+                return callback(null, modifyResults);
             });
     },
 

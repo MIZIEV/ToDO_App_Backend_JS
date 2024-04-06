@@ -1,4 +1,5 @@
 const pool = require("../../configuration/databaseConnector.js");
+const validator = require("validator");
 
 module.exports = {
     register: (data, callBack) => {
@@ -15,8 +16,17 @@ module.exports = {
             return callBack(null, results);
         });
     },
-    login: (email, callBack) => {
-        pool.query("SELECT * FROM user WHERE user_email = ?", [email],
+    login: (usernameOrEmail, callBack) => {
+
+        let query;
+        if (validator.isEmail(usernameOrEmail)) {
+            query = "SELECT * FROM user WHERE user_email = ?";
+        } else {
+            query = "SELECT * FROM user WHERE user_name = ?";
+        }
+
+
+        pool.query(query, [usernameOrEmail],
             (error, results, fields) => {
                 if (error) {
                     return callBack(error);
