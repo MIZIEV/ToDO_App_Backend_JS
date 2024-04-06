@@ -18,7 +18,7 @@ module.exports = {
 
                 id = userResults[0].id;
 
-                pool.query("SELECT * FROM task WHERE user_id = ?", [id],
+                pool.query("SELECT * FROM task WHERE user_id = ? AND (is_completed = false OR is_completed IS NULL)", [id],
                     (error, results, fields) => {
                         if (error) {
                             return callback(error);
