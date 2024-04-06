@@ -5,7 +5,7 @@ const pool = require("../../configuration/databaseConnector.js");
 module.exports = {
 
     getAllTasks: (username, callback) => {
-        
+
         let id;
 
         pool.query("SELECT id FROM user WHERE user_name = ?", [username],
@@ -82,6 +82,16 @@ module.exports = {
                 }
                 return callback(null, results);
             });
+    },
+
+    completeTask: (id, callback) => {
+        pool.query("UPDATE task SET is_completed = true where id = ?", [id],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            })
     },
 
     deleteTask: (id, callback) => {

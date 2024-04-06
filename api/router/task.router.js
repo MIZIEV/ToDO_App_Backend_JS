@@ -1,4 +1,4 @@
-const { addNewTask, getAllTasks, getOneTask, updateTask, deleteTask } = require("../controller/task.controller.js");
+const { addNewTask, getAllTasks, getOneTask, updateTask, completeTask, deleteTask } = require("../controller/task.controller.js");
 const router = require("express").Router();
 const { checkToken } = require("../../configuration/jwtValidator.js");
 
@@ -6,6 +6,7 @@ const { checkToken } = require("../../configuration/jwtValidator.js");
 router.get("/list/:username", checkToken, getAllTasks);
 router.get("/:id/:username", checkToken, getOneTask);
 router.post("/add/:username", checkToken, addNewTask);
+router.patch("/:id/complete/:username", checkToken, completeTask);
 router.put("/:id/:username", checkToken, updateTask);
 router.delete("/delete/:id/:username", checkToken, deleteTask);
 
