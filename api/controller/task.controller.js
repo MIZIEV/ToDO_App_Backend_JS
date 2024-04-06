@@ -1,4 +1,4 @@
-const { addNewTask, getOneTask, getAllTasks, updateTask, completeTask, deleteTask } = require("../service/task.service.js");
+const { addNewTask, getOneTask, getAllTasks, getCompletedTasks, updateTask, completeTask, deleteTask } = require("../service/task.service.js");
 
 
 module.exports = {
@@ -50,6 +50,18 @@ module.exports = {
                 })
             }
             return res.status(200).json(results)
+        });
+    },
+
+    getCompletedTask: (req, res) => {
+        const username = req.params.username;
+
+        getCompletedTasks(username, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            return res.status(200).json(results);
         });
     },
 
