@@ -5,7 +5,7 @@ const pool = require("../../configuration/databaseConnector.js");
 module.exports = {
 
     getAllTasks: (username, callback) => {
-        
+
         let id;
 
         pool.query("SELECT id FROM user WHERE user_name = ?", [username],
@@ -18,7 +18,7 @@ module.exports = {
 
                 id = userResults[0].id;
 
-                pool.query("SELECT * FROM task WHERE user_id = ?", [id],
+                pool.query("SELECT * FROM task WHERE user_id = ? AND (is_completed = false OR is_completed IS NULL)", [id],
                     (error, results, fields) => {
                         if (error) {
                             return callback(error);
@@ -28,6 +28,33 @@ module.exports = {
             });
 
 
+    },
+
+    getCompletedTasks: (username, callback) => {
+        pool.query("SELECT id FROM user WHERE user_name = ?", [username],
+            (error, userResults, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                id = userResults[0].id;
+
+                pool.query("SELECT * FROM task WHERE user_id = ? AND is_completed = true", [id],
+                    (error, results, fields) => {
+                        if (error) {
+                            return callback(error);
+                        }
+
+                        const modifyResults = results.map(task => ({
+                            id: task.id,
+                            createdAt: task.createdAt,
+                            description: task.description,
+                            isCompleted: task.is_completed[0] === 1,
+                            name: task.name,
+                            user_id: task.user_id
+                        }))
+                        return callback(null, modifyResults);
+                    });
+            })
     },
 
     getOneTask: (id, callback) => {
@@ -82,6 +109,16 @@ module.exports = {
                 }
                 return callback(null, results);
             });
+    },
+
+    completeTask: (id, callback) => {
+        pool.query("UPDATE task SET is_completed = true where id = ?", [id],
+            (error, results, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, results);
+            })
     },
 
     deleteTask: (id, callback) => {
