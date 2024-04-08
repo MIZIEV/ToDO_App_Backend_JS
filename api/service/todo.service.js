@@ -6,7 +6,7 @@ module.exports = {
     addNewTodo: (todoId, data, callback) => {
 
         pool.query("INSERT INTO todo (is_completed, todo_name, todo_id) VALUES (?, ?, ?)", [
-            isCompleted,
+            data.isCompleted,
             data.todoName,
             todoId
         ],
