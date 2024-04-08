@@ -70,6 +70,7 @@ module.exports = {
     addNewTask: (username, data, callback) => {
 
         let id;
+        const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
         pool.query("SELECT id FROM user WHERE user_name = ?", [username],
             (error, userResults, fields) => {
@@ -80,7 +81,7 @@ module.exports = {
 
                 pool.query("INSERT INTO task (created_at, description, is_completed, name, user_id) VALUES (?, ?, ?, ?, ?)",
                     [
-                        data.created_at,
+                        createdAt,
                         data.description,
                         data.isCompleted,
                         data.name,
