@@ -4,7 +4,7 @@ const pool = require("../../configuration/databaseConnector.js");
 
 module.exports = {
 
-    getAllTasks: (username, callback) => {
+    getInCompletedTask: (username, callback) => {
 
         let id;
 
