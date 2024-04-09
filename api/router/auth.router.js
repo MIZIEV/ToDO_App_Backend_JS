@@ -1,8 +1,8 @@
 const { register, login } = require("../controller/auth.controller.js");
 const authRouter = require("express").Router();
-const { checkToken } = require("../../configuration/jwtValidator.js");
+const userJsonValidator = require("../util/userJsonValidator.js");
 
-authRouter.post("/register", register);
+authRouter.post("/register", userJsonValidator, register);
 authRouter.post("/login", login);
 
 
