@@ -35,6 +35,18 @@ module.exports = {
         });
     },
 
+    getCompletedTasks: (req, res) => {
+        const username = req.params.username;
+
+        getCompletedTasks(username, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            return res.status(200).json(results);
+        });
+    },
+
     getOneTask: (req, res) => {
         const id = req.params.id;
 
@@ -50,18 +62,6 @@ module.exports = {
                 })
             }
             return res.status(200).json(results)
-        });
-    },
-
-    getCompletedTask: (req, res) => {
-        const username = req.params.username;
-
-        getCompletedTasks(username, (err, results) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            return res.status(200).json(results);
         });
     },
 
@@ -81,7 +81,7 @@ module.exports = {
                 });
             };
             return res.status(200).json(results);
-        })
+        });
     },
 
     completeTask: (req, res) => {
@@ -100,7 +100,7 @@ module.exports = {
                 });
             };
             return res.status(200).json(results);
-        })
+        });
     },
 
     deleteTask: (req, res) => {
@@ -125,7 +125,7 @@ module.exports = {
                 success: 1,
                 message: "Task deleted."
             })
-        })
+        });
     }
 
 };

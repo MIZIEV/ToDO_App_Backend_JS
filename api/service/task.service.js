@@ -4,69 +4,6 @@ const pool = require("../../configuration/databaseConnector.js");
 
 module.exports = {
 
-    getInCompletedTask: (username, callback) => {
-
-        let id;
-
-        pool.query("SELECT id FROM user WHERE user_name = ?", [username],
-            (error, userResults, fields) => {
-
-
-                if (error) {
-                    return callback(error);
-                };
-
-                id = userResults[0].id;
-
-                pool.query("SELECT * FROM task WHERE user_id = ? AND (is_completed = false OR is_completed IS NULL)", [id],
-                    (error, results, fields) => {
-                        if (error) {
-                            return callback(error);
-                        }
-                        return callback(null, results);
-                    });
-            });
-
-
-    },
-
-    getCompletedTasks: (username, callback) => {
-        pool.query("SELECT id FROM user WHERE user_name = ?", [username],
-            (error, userResults, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                id = userResults[0].id;
-
-                pool.query("SELECT * FROM task WHERE user_id = ? AND is_completed = true", [id],
-                    (error, results, fields) => {
-                        if (error) {
-                            return callback(error);
-                        }
-
-                        const modifyResults = results.map(task => ({
-                            id: task.id,
-                            createdAt: task.createdAt,
-                            description: task.description,
-                            isCompleted: task.isCompleted[0] === 1,
-                            name: task.name,
-                            user_id: task.user_id
-                        }))
-                        return callback(null, modifyResults);
-                    });
-            })
-    },
-
-    getOneTask: (id, callback) => {
-        pool.query("SELECT * FROM task WHERE id=?", [id],
-            (error, result, fields) => {
-                if (error) {
-                    return callback(error);
-                }
-                return callback(null, result[0]);
-            });
-    },
-
     addNewTask: (username, data, callback) => {
 
         let id;
@@ -93,6 +30,68 @@ module.exports = {
                         return callback(null, results);
 
                     });
+            });
+    },
+
+    getInCompletedTask: (username, callback) => {
+
+        let id;
+
+        pool.query("SELECT id FROM user WHERE user_name = ?", [username],
+            (error, userResults, fields) => {
+                if (error) {
+                    return callback(error);
+                };
+
+                id = userResults[0].id;
+
+                pool.query("SELECT * FROM task WHERE user_id = ? AND is_completed = false", [id],
+                    (error, results, fields) => {
+                        if (error) {
+                            return callback(error);
+                        }
+                        return callback(null, results);
+                    });
+            });
+    },
+
+    getCompletedTasks: (username, callback) => {
+
+        let id;
+
+        pool.query("SELECT id FROM user WHERE user_name = ?", [username],
+            (error, userResults, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                id = userResults[0].id;
+
+                pool.query("SELECT * FROM task WHERE user_id = ? AND is_completed = true", [id],
+                    (error, results, fields) => {
+                        if (error) {
+                            return callback(error);
+                        }
+
+                       const modifyResults = results.map(task => ({
+                            id: task.id,
+                            createdAt: task.createdAt,
+                            description: task.description,
+                            isCompleted: task.is_completed[0] === 1,
+                            name: task.name,
+                            user_id: task.user_id
+                        }))
+                        return callback(null, modifyResults);
+                    });
+            })
+    },
+
+    getOneTask: (id, callback) => {
+        pool.query("SELECT * FROM task WHERE id=?", [id],
+            (error, result, fields) => {
+                if (error) {
+                    return callback(error);
+                }
+                return callback(null, result[0]);
             });
     },
 
