@@ -50,7 +50,15 @@ module.exports = {
                         if (error) {
                             return callback(error);
                         }
-                        return callback(null, results);
+                        const modifyResults = results.map(task => ({
+                            id: task.id,
+                            createdAt: task.createdAt,
+                            description: task.description,
+                            isCompleted: task.is_completed[0] === 1,
+                            name: task.name,
+                            user_id: task.user_id
+                        }))
+                        return callback(null, modifyResults);
                     });
             });
     },
