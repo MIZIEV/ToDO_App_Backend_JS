@@ -1,4 +1,4 @@
-const { addNewTask, getOneTask, getAllTasks, getCompletedTasks, updateTask, completeTask, deleteTask } = require("../service/task.service.js");
+const { addNewTask, getOneTask, getInCompletedTask, getCompletedTasks, updateTask, completeTask, deleteTask } = require("../service/task.service.js");
 
 
 module.exports = {
@@ -22,15 +22,27 @@ module.exports = {
         });
     },
 
-    getAllTasks: (req, res) => {
+    getInCompletedTask: (req, res) => {
 
         const username = req.params.username;
 
-        getAllTasks(username, (err, results) => {
+        getInCompletedTask(username, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             };
+            return res.status(200).json(results);
+        });
+    },
+
+    getCompletedTasks: (req, res) => {
+        const username = req.params.username;
+
+        getCompletedTasks(username, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
             return res.status(200).json(results);
         });
     },
@@ -53,18 +65,6 @@ module.exports = {
         });
     },
 
-    getCompletedTask: (req, res) => {
-        const username = req.params.username;
-
-        getCompletedTasks(username, (err, results) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            return res.status(200).json(results);
-        });
-    },
-
     updateTask: (req, res) => {
         const id = req.params.id;
         const data = req.body;
@@ -81,7 +81,7 @@ module.exports = {
                 });
             };
             return res.status(200).json(results);
-        })
+        });
     },
 
     completeTask: (req, res) => {
@@ -100,7 +100,7 @@ module.exports = {
                 });
             };
             return res.status(200).json(results);
-        })
+        });
     },
 
     deleteTask: (req, res) => {
@@ -125,7 +125,7 @@ module.exports = {
                 success: 1,
                 message: "Task deleted."
             })
-        })
+        });
     }
 
 };
